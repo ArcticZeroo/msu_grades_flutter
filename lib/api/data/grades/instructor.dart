@@ -15,6 +15,11 @@ class Instructor extends MsuObject{
 
   List<CourseTerm> courses;
 
+  Instructor(String name, List<CourseTerm> courseTerms){
+    rawName = name;
+    courses = courseTerms;
+  }
+
   @override
   displayDuringLookup(){
     return FlatButton(child: Text(name)); // TODO: add onPressed functionality
