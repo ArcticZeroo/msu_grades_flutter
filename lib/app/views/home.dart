@@ -11,26 +11,29 @@ class _HomeViewState extends State<HomeView> {
     showSearch(delegate: Search(), context: context);
   }
 
+  Widget buildBody() {
+    return FlatButton(
+        textColor: Colors.green,
+        // Theme.color.of(context).primaryTextTheme.bodyText2,
+        onPressed: () {
+          searchCallback(context);
+        },
+        child: Container(
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black, width: 1),
+                borderRadius: BorderRadius.circular(6)),
+            child: Text(
+              "Search MSU Grades",
+              textScaleFactor: 4.0,
+            )));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("MSU Grades")),
-      body: Center(
-        child: FlatButton(
-            textColor: Colors.green,
-            // Theme.color.of(context).primaryTextTheme.bodyText2,
-            onPressed: () {
-              searchCallback(context);
-            },
-            child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black, width: 1),
-                    borderRadius: BorderRadius.circular(6)),
-                child: Text(
-                  "Search MSU Grades",
-                  textScaleFactor: 4.0,
-                ))),
-      ),
-    );
+        appBar: AppBar(title: Text('MSU Grades')),
+        body: Center(
+          child: buildBody(),
+        ));
   }
 }

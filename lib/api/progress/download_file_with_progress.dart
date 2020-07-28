@@ -11,7 +11,7 @@ class DownloadFileWithProgress {
   final String savePath;
   final Lock _lock = new Lock();
   int _totalByteCount;
-  List<int> _receivedBytes;
+  List<int> _receivedBytes = [];
 
   DownloadFileWithProgress(
       {@required this.downloadUri, @required this.savePath})

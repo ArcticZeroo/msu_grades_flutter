@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:msu_grades/app/views/home.dart';
+import 'package:msu_grades/app/views/loading_popover.dart';
 
 void main() {
   runApp(Application());
@@ -14,7 +15,10 @@ class Application extends StatelessWidget {
         primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomeView(),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+      ),
+      home: LoadingPopover(HomeView()),
     );
   }
 }
