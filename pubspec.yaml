@@ -24,8 +24,11 @@ dependencies:
   flutter:
     sdk: flutter
 
-  http: ^0.12.2
+  csv: ^4.0.3
   fuzzy: ^0.2.3
+  http: ^0.12.2
+  path_provider: ^1.6.11
+  synchronized: ^2.2.0+2
 
 dev_dependencies:
   flutter_test:
