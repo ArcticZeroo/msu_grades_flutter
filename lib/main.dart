@@ -12,11 +12,16 @@ class Application extends StatelessWidget {
     return MaterialApp(
       title: 'MSU Grades',
       theme: ThemeData(
+        brightness: Brightness.light,
         primarySwatch: Colors.green,
+        primaryColor: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       darkTheme: ThemeData(
+        accentColor: Colors.greenAccent,
         brightness: Brightness.dark,
+        primarySwatch: Colors.green,
+        primaryColor: Colors.green,
       ),
       home: LoadingPopover(HomeView()),
     );
