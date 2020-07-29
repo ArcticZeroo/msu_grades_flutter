@@ -30,10 +30,13 @@ class _LoadingPopoverState extends State<LoadingPopover> {
 
   Future<void> load() async {
     if (!GradeDatasetClient.instance.isDatasetLoaded) {
+      print('not loaded');
       bool isFileOnDevice = await GradeDatasetClient.instance.isSavedOnDevice();
       if (isFileOnDevice) {
+        print('file is on device, reading from file');
         await GradeDatasetClient.instance.readFromFile();
       } else {
+        print('file is not on device, beginning download');
         setState(() {
           _loadingStatus = LoadingStatus.downloadingFile;
         });
@@ -55,6 +58,8 @@ class _LoadingPopoverState extends State<LoadingPopover> {
 
   @override
   Widget build(BuildContext context) {
+    print(
+        'isDatasetLoaded: ${GradeDatasetClient.instance.isDatasetLoaded}, loadingStatus: $_loadingStatus');
     if (GradeDatasetClient.instance.isDatasetLoaded ||
         _loadingStatus == LoadingStatus.complete) {
       return widget.bottomLayer;
