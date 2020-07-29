@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:fuzzy/data/result.dart';
-import 'package:msu_grades/api/data/grades/msu_object.dart';
-import 'instructor.dart';
 import 'package:fuzzy/fuzzy.dart';
 
-class Search extends SearchDelegate{
-
-  List<Result> getFuzzyResults(){
+class GradeDatasetSearchDelegate extends SearchDelegate {
+  List<Result> getFuzzyResults() {
     return Fuzzy([]).search(query);
   }
 
-  List<Widget> getMsuObjects(List<Result> results){
+  List<Widget> getMsuObjects(List<Result> results) {
     List<Widget> to_display;
-    for(int i = 0; i < results.length; i++){
+    for (int i = 0; i < results.length; i++) {
       to_display.add(results[i].item.displayDuringLookup());
     }
     return to_display;
@@ -38,7 +35,7 @@ class Search extends SearchDelegate{
     return ListView(
         padding: EdgeInsets.all(4),
         children: getMsuObjects(getFuzzyResults()) // come from fuzzy
-    );
+        );
   }
 
   @override
@@ -46,9 +43,8 @@ class Search extends SearchDelegate{
     // TODO: implement buildSuggestions
     // list view, get from fuzzy
     return ListView(
-      padding: EdgeInsets.all(4),
-      children: getMsuObjects(getFuzzyResults()) // come from fuzzy
-    );
+        padding: EdgeInsets.all(4),
+        children: getMsuObjects(getFuzzyResults()) // come from fuzzy
+        );
   }
-
 }
