@@ -11,14 +11,6 @@ class LoadingView extends StatelessWidget {
 
   LoadingView({@required this.status, this.progress = 0.0});
 
-  Widget buildBody() {
-    List<Widget> children = [];
-
-    return Column(
-      children: children,
-    );
-  }
-
   List<Widget> buildChildren(BuildContext context) {
     List<Widget> unseparatedChildren = [];
 
@@ -29,7 +21,7 @@ class LoadingView extends StatelessWidget {
       ]);
     } else if (status == LoadingStatus.fetchingMetadata) {
       unseparatedChildren.addAll(
-          [Text('Fetching file metadata...'), CircularProgressIndicator()]);
+          [Text('Fetching file metadata...'), Icon(Icons.insert_drive_file)]);
     } else if (status == LoadingStatus.complete) {
       unseparatedChildren.addAll([
         Text('Download complete!', style: textStyle),
@@ -53,7 +45,7 @@ class LoadingView extends StatelessWidget {
       ]);
     }
 
-    return ListUtil.separate(unseparatedChildren, () => SizedBox(height: 8.0));
+    return ListUtil.separate(unseparatedChildren, () => SizedBox(height: 16.0));
   }
 
   Widget buildLoadingStateCard(BuildContext context) {
