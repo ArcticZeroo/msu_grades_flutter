@@ -3,7 +3,9 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:csv/csv.dart';
+import 'package:msu_grades/api/data/grades/compressor.dart';
 import 'package:msu_grades/api/data/grades/dataset.dart';
+import 'package:msu_grades/api/data/grades/parser.dart';
 import 'package:msu_grades/api/progress/download_file_with_progress.dart';
 import 'package:msu_grades/util/FileUtil.dart';
 import 'package:path/path.dart' as path;
@@ -24,17 +26,14 @@ class GradeDatasetClient {
   }
 
   GradeDataset _dataset;
+  GradeDataset get dataset => _dataset;
 
   bool get isDatasetLoaded {
     return _dataset != null;
   }
 
-  GradeDataset _parseDatasetFile(List<List<dynamic>> csv) {
-    return null;
-  }
-
   void _onCsvLoaded(List<List<dynamic>> csv) {
-    _dataset = _parseDatasetFile(csv);
+    _dataset = DatasetParser.parse(csv);
   }
 
   List<List<dynamic>> _fileContentsToCsv(String fileContents) {
@@ -42,7 +41,7 @@ class GradeDatasetClient {
   }
 
   Future<String> getFilePath() async {
-    var directory = await getApplicationDocumentsDirectory();
+    final directory = await getApplicationDocumentsDirectory();
     return path.join(directory.path, _fileName);
   }
 
@@ -51,25 +50,30 @@ class GradeDatasetClient {
   }
 
   Future<void> downloadFromServer(DownloadProgressCallback onProgress) async {
-    DownloadFileWithProgress downloader = DownloadFileWithProgress(
-        downloadUri: Uri.parse(_downloadUrl), savePath: await getFilePath());
+    DownloadFileWithProgress downloader =
+        DownloadFileWithProgress(downloadUri: Uri.parse(_downloadUrl));
 
     VoidCallback progressListener = () {
       onProgress(downloader.progress.value);
     };
 
     downloader.progress.addListener(progressListener);
-    var bytes = await downloader.download();
+    final bytes = await downloader.download();
     downloader.progress.removeListener(progressListener);
 
-    var fileContents = utf8.decode(bytes);
-    var csv = _fileContentsToCsv(fileContents);
-    _onCsvLoaded(csv);
+    final fileContents = utf8.decode(bytes);
+    final csv = _fileContentsToCsv(fileContents);
+    final compressedCsv = DatasetCompressor.compressDataset(csv);
+    _onCsvLoaded(compressedCsv);
+
+    final fileSavePath = await getFilePath();
+    final file = File(fileSavePath);
+    await file.writeAsString(const ListToCsvConverter().convert(compressedCsv));
   }
 
   Future<void> readFromFile() async {
-    File file = File(await getFilePath());
-    var fileContents = await file.readAsString();
+    final file = File(await getFilePath());
+    final fileContents = await file.readAsString();
     _onCsvLoaded(_fileContentsToCsv(fileContents));
   }
 }
